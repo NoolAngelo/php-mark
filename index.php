@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.122.0">
-  <title>Webpage ni Gar</title>
+  <title>Webpage ni Cutie</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/pricing/">
 
@@ -175,7 +175,7 @@
 
       <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h1 class="display-4 fw-normal text-body-emphasis">Home Page ni Cutie</h1>
-        <p class="fs-5 text-body-secondary">Home page ito ni Gar wag kang ano par.</p>
+        <p class="fs-5 text-body-secondary">Home page ito ni Cutie wag kang ano par.</p>
       </div>
     </header>
 
