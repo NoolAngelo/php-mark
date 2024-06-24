@@ -13,6 +13,8 @@
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/pricing/">
 
+
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -102,6 +104,36 @@
 </head>
 
 <body>
+  <!-- Start include connect to DATABASE-->
+  <?php
+  include 'db_connect.php';
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstName = $conn->real_escape_string($_POST['firstName']);
+    $lastName = $conn->real_escape_string($_POST['lastName']);
+    $dob = $conn->real_escape_string($_POST['dob']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $contactNumber = $conn->real_escape_string($_POST['contactNumber']);
+
+    $sql = "INSERT INTO users (firstName, lastName, dob, email, contactNumber) VALUES ('$firstName', '$lastName', '$dob', '$email', '$contactNumber')";
+
+    if ($conn->query($sql) === TRUE) {
+      echo "New record created successfully";
+    } else {
+      echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    $conn->close();
+  }
+  ?>
+
+  <!-- End include connect to DATABASE-->
+
+
+
+
+
+
   <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
     <symbol id="check2" viewBox="0 0 16 16">
       <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
@@ -114,7 +146,7 @@
       <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
     </symbol>
     <symbol id="sun-fill" viewBox="0 0 16 16">
-      <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 0a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 1 1-.707.707l-1.414-1.414a.5.5 0 0 1 0-.707zm-9.193-9.193a.5.5 0 0 1 .707 0L4.636 3.05a.5.5 0 1 1-.707.707L2.515 2.343a.5.5 0 0 1 0-.707z" />
+      <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
     </symbol>
   </svg>
 
@@ -127,19 +159,8 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
       <li>
-        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#circle-half"></use>
-          </svg>
-          Auto
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
         <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+          <svg class="bi me-2 opacity-50" width="1em" height="1em">
             <use href="#sun-fill"></use>
           </svg>
           Light
@@ -150,10 +171,21 @@
       </li>
       <li>
         <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+          <svg class="bi me-2 opacity-50" width="1em" height="1em">
             <use href="#moon-stars-fill"></use>
           </svg>
           Dark
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+          <svg class="bi me-2 opacity-50" width="1em" height="1em">
+            <use href="#circle-half"></use>
+          </svg>
+          Auto
           <svg class="bi ms-auto d-none" width="1em" height="1em">
             <use href="#check2"></use>
           </svg>
@@ -163,66 +195,87 @@
   </div>
 
 
-  <div class="d-flex flex-column h-100 text-center text-bg-dark">
-    <main class="px-3">
-      <h1>Register</h1>
-      <form action="registration.php" method="post">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" class="form-control" id="username" name="username" required>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="check" viewBox="0 0 16 16">
+      <title>Check</title>
+      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+    </symbol>
+  </svg>
+
+  <div class="container py-3">
+    <header>
+      <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+        <?php include 'header.php'; ?>
+      </div>
+
+      <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal text-body-emphasis">Register kana Gar!</h1>
+        <p class="fs-5 text-body-secondary">Home page ito ni Gar wag kang ano par.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="row">
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">REGISTER NA PLEASE!</h4>
+            </div>
+            <div class="card-body">
+              <form id="registrationForm" novalidate>
+                <div class="mb-3">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input type="text" class="form-control" id="firstName" required pattern="[A-Za-z\s]+">
+                  <div class="invalid-feedback">Please enter your first name (letters and spaces only).</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input type="text" class="form-control" id="lastName" required pattern="[A-Za-z]+">
+                  <div class="invalid-feedback">Please enter your last name (letters only).</div>
+                </div>
+                <div class="mb-3">
+                  <label for="dob" class="form-label">Date of Birth</label>
+                  <input type="date" class="form-control" id="dob" required>
+                  <div class="invalid-feedback">Please enter a valid date of birth.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" required>
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="contactNumber" class="form-label">Contact Number</label>
+                  <input type="tel" class="form-control" id="contactNumber" required pattern="^(\+63|0)9\d{9}$">
+                  <div class="invalid-feedback">Please enter a valid Philippine mobile number (e.g., +639XXXXXXXXX or 09XXXXXXXXX).</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">Register</button>
-      </form>
+      </div>
     </main>
+
+
+    <script>
+      document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        var form = event.target;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+      <?php include 'footer.php'; ?>
+    </footer>
   </div>
-
-  <?php
-  // Check if the form was submitted
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve the form data
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
-
-    // Database connection parameters
-    $servername = "localhost";  // Adjust as needed
-    $dbusername = "root";       // Adjust as needed
-    $dbpassword = "";           // Adjust as needed
-    $dbname = "your_database";  // Adjust as needed
-
-    // Create connection
-    $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Prepare and bind the SQL statement
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $username, $email, $password);
-
-    // Execute the statement and check if successful
-    if ($stmt->execute()) {
-      echo "<div class='alert alert-success mt-3'>New record created successfully</div>";
-    } else {
-      echo "<div class='alert alert-danger mt-3'>Error: " . $stmt->error . "</div>";
-    }
-
-    // Close the statement and connection
-    $stmt->close();
-    $conn->close();
-  }
-  ?>
-
   <script src="js/bootstrap.bundle.min.js"></script>
 
 </body>
