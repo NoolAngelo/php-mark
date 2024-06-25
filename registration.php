@@ -3,22 +3,15 @@
 
 <head>
   <script src="../assets/js/color-modes.js"></script>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.122.0">
   <title>Pricing example · Bootstrap v5.3</title>
-
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/pricing/">
-
-
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
   <link href="css/bootstrap.min.css" rel="stylesheet">
-
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -97,90 +90,69 @@
       display: block !important;
     }
   </style>
-
-
   <!-- Custom styles for this template -->
   <link href="pricing.css" rel="stylesheet">
 </head>
 
 <body>
-
   <div class="container py-3">
     <header>
       <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
         <?php include 'header.php'; ?>
       </div>
-
       <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h1 class="display-4 fw-normal text-body-emphasis">Register kana Gar!</h1>
         <p class="fs-5 text-body-secondary">Home page ito ni Gar wag kang ano par.</p>
       </div>
     </header>
-
     <main>
-      <div class="row">
-        <div class="col">
-          <div class="card mb-4 rounded-3 shadow-sm">
-            <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">REGISTER NA PLEASE!</h4>
-            </div>
-            <div class="card-body">
-              <form id="registrationForm" novalidate>
-                <div class="mb-3">
-                  <label for="firstName" class="form-label">First Name</label>
-                  <input type="text" class="form-control" id="firstName" required pattern="[A-Za-z\s]+">
-                  <div class="invalid-feedback">Please enter your first name (letters and spaces only).</div>
-                </div>
-
-                <div class="mb-3">
-                  <label for="lastName" class="form-label">Last Name</label>
-                  <input type="text" class="form-control" id="lastName" required pattern="[A-Za-z]+">
-                  <div class="invalid-feedback">Please enter your last name (letters only).</div>
-                </div>
-                <div class="mb-3">
-                  <label for="dob" class="form-label">Date of Birth</label>
-                  <input type="date" class="form-control" id="dob" required>
-                  <div class="invalid-feedback">Please enter a valid date of birth.</div>
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" required>
-                  <div class="invalid-feedback">Please enter a valid email address.</div>
-                </div>
-                <div class="mb-3">
-                  <label for="contactNumber" class="form-label">Contact Number</label>
-                  <input type="tel" class="form-control" id="contactNumber" required pattern="^(\+63|0)9\d{9}$">
-                  <div class="invalid-feedback">Please enter a valid Philippine mobile number (e.g., +639XXXXXXXXX or 09XXXXXXXXX).</div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card mt-4">
+              <div class="card-header bg-primary text-white">
+                <h2>Register</h2>
+              </div>
+              <div class="card-body">
+                <form method="post" action="register.php">
+                  <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter First Name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter Last Name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select class="form-control" id="gender" name="gender" required>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
+                      <option value="o">Other</option>
+                    </select>
+                  </div>
+                  <br>
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </main>
-
-
-    <script>
-      document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        var form = event.target;
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
       <?php include 'footer.php'; ?>
     </footer>
   </div>
   <script src="js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
