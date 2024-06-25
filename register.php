@@ -1,29 +1,35 @@
 <?php
+// Database connection
+$servername = "localhost";
 $username = "root";
 $password = "";
-$database = "reservation";
-$mysqli = new mysqli("localhost", $username, $password, $database);
+$dbname = "reservation";
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
+// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $email = $_POST['email'];
-    $gender = $_POST['gender'];
+    // Collect and sanitize form data
+    $firstName = htmlspecialchars($_POST['firstName']);
+    $lastName = htmlspecialchars($_POST['lastName']);
+    $email = htmlspecialchars($_POST['email']);
+    $gender = htmlspecialchars($_POST['gender']);
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    $stmt = $mysqli->prepare("INSERT INTO members (fname, lname, email, gender) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $firstName, $lastName, $email, $gender);
+    // Insert form data into database
+    $sql = "INSERT INTO members (fname, lname, email, gender, password)
+            VALUES ('$firstName', '$lastName', '$email', '$gender', '$password')";
 
-    if ($stmt->execute()) {
+    if ($conn->query($sql) === TRUE) {
         echo "New record created successfully";
     } else {
-        echo "Error: " . $stmt->error;
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
-    $stmt->close();
+    $conn->close();
 }
-
-$mysqli->close();
