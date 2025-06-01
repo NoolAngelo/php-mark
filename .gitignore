@@ -1,0 +1,48 @@
+# PHP
+vendor/
+composer.lock
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+.env.testing
+
+# Logs
+logs/*.log
+logs/*.json
+logs/*.txt
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.tmp
+
+# Cache
+cache/
+tmp/
+
+# Database dumps (except schema)
+*.sql
+!database_update.sql
+
+# Security
+migrate_passwords.php

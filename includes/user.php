@@ -135,5 +135,64 @@ class User {
         }
         return null;
     }
+
+    public function updateProfile($name) {
+        try {
+            if (!$this->isLoggedIn()) {
+                throw new Exception("Not logged in");
+            }
+
+            $query = "UPDATE " . $this->table_name . " SET name = ?, updated_at = NOW() WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            
+            if ($stmt->execute([$name, $_SESSION['user_id']])) {
+                $_SESSION['name'] = $name; // Update session
+                return true;
+            } else {
+                throw new Exception("Profile update failed");
+            }
+        } catch (Exception $e) {
+            error_log("Profile update error: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function changePassword($currentPassword, $newPassword) {
+        try {
+            if (!$this->isLoggedIn()) {
+                throw new Exception("Not logged in");
+            }
+
+            // Get current password hash
+            $query = "SELECT password FROM " . $this->table_name . " WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([$_SESSION['user_id']]);
+            
+            if ($stmt->rowCount() != 1) {
+                throw new Exception("User not found");
+            }
+            
+            $row = $stmt->fetch();
+            
+            // Verify current password
+            if (!Security::verifyPassword($currentPassword, $row['password'])) {
+                throw new Exception("Current password is incorrect");
+            }
+
+            // Update with new password
+            $hashedPassword = Security::hashPassword($newPassword);
+            $updateQuery = "UPDATE " . $this->table_name . " SET password = ?, updated_at = NOW() WHERE id = ?";
+            $updateStmt = $this->conn->prepare($updateQuery);
+            
+            if ($updateStmt->execute([$hashedPassword, $_SESSION['user_id']])) {
+                return true;
+            } else {
+                throw new Exception("Password change failed");
+            }
+        } catch (Exception $e) {
+            error_log("Password change error: " . $e->getMessage());
+            throw $e;
+        }
+    }
 }
 ?>
