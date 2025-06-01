@@ -1,36 +1,59 @@
 <?php
+require_once 'includes/security_headers.php';
+require_once 'includes/user.php';
+require_once 'includes/security.php';
+require_once 'includes/rate_limiter.php';
+
 session_start();
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "reservation";
+$error_message = '';
+$success_message = '';
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Rate limiting
+$rateLimiter = new RateLimiter();
+$clientIP = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    try {
+        // Check rate limiting
+        if (!$rateLimiter->isAllowed($clientIP)) {
+            $remainingTime = $rateLimiter->getRemainingTime($clientIP);
+            throw new Exception("Too many login attempts. Please try again in " . ceil($remainingTime / 60) . " minutes.");
+        }
 
-    // Password hashing is recommended for real applications
-    $sql = "SELECT * FROM members WHERE email='$email' AND password='$password'";
+        // CSRF Protection
+        if (!isset($_POST['csrf_token']) || !Security::validateCSRFToken($_POST['csrf_token'])) {
+            throw new Exception("Invalid request");
+        }
 
-    $result = $conn->query($sql);
+        // Sanitize input
+        $email = Security::sanitizeInput($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
 
-    if ($result->num_rows > 0) {
-        // Successful login
-        $_SESSION['email'] = $email;
-        header("Location: welcome.php");
-    } else {
-        // Invalid credentials
-        echo "Invalid email or password";
+        if (empty($email) || empty($password)) {
+            throw new Exception("All fields are required");
+        }
+
+        $user = new User();
+        
+        if ($user->login($email, $password)) {
+            header("Location: welcome.php");
+            exit();
+        }
+        
+    } catch (Exception $e) {
+        // Record failed attempt for rate limiting
+        $rateLimiter->recordAttempt($clientIP);
+        
+        $error_message = $e->getMessage();
+        error_log("Login attempt failed: " . $e->getMessage() . " - IP: " . $clientIP);
     }
-
-    $conn->close();
 }
+
+// If there's an error, redirect back to login with error
+if (!empty($error_message)) {
+    $_SESSION['login_error'] = $error_message;
+    header("Location: login.php");
+    exit();
+}
+?>

@@ -36,6 +36,29 @@
 </head>
 
 <body>
+    <?php
+    require_once 'includes/security.php';
+    session_start();
+    
+    // Check if user is already logged in
+    require_once 'includes/user.php';
+    $user = new User();
+    if ($user->isLoggedIn()) {
+        header("Location: welcome.php");
+        exit();
+    }
+    
+    // Get error message if any
+    $error_message = '';
+    if (isset($_SESSION['login_error'])) {
+        $error_message = $_SESSION['login_error'];
+        unset($_SESSION['login_error']);
+    }
+    
+    // Generate CSRF token
+    $csrf_token = Security::generateCSRFToken();
+    ?>
+    
     <div class="container py-3">
         <header>
             <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
@@ -57,7 +80,15 @@
                                 <h3>Login</h3>
                             </div>
                             <div class="card-body">
+                                <?php if (!empty($error_message)): ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?php echo htmlspecialchars($error_message); ?>
+                                    </div>
+                                <?php endif; ?>
+                                
                                 <form id="loginForm" action="process_login.php" method="POST" novalidate>
+                                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                                    
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email address</label>
                                         <input type="email" class="form-control" id="email" name="email" required>
@@ -74,7 +105,10 @@
                                     </div>
                                     <button type="submit" class="btn btn-bd-primary btn-block">Login</button>
                                 </form>
-                                <button onclick="goBack()" class="btn btn-go-back">Go Back</button>
+                                <div class="mt-3">
+                                    <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+                                    <a href="registration.php" class="btn btn-link">Don't have an account? Register</a>
+                                </div>
                                 <script>
                                     function goBack() {
                                         window.history.back();
